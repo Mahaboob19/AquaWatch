@@ -54,11 +54,11 @@ const waterReadingSchema = new mongoose.Schema(
             type: String,
             enum: ["simulator","iot","import"],
             default: "simulator",
-        }
+        },
     },
     {
         versionKey: false,
     }
 );
 
-module.exports = mongoose.model("WaterReading", waterReadingSchema);
+module.exports = mongoose.model("WaterReading", waterReadingSchema, "waterReadings");
