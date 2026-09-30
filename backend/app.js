@@ -3,6 +3,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
+const readingRoutes = require("./src/routes/readingRoutes");
+
 const app = express();
 
 app.use(helmet());
@@ -26,5 +28,7 @@ app.get("/api/v1/health", (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+app.use("/api/v1/readings", readingRoutes);
 
 module.exports = app;
