@@ -8,7 +8,8 @@
     "dev": "nodemon server.js",
     "db:init": "node scripts/initDatabase.js",
     "db:seed:device": "node scripts/seedDevice.js",
-    "db:seed:reading": "node scripts/seedReading.js"
+    "db:seed:reading": "node scripts/seedReading.js",
+    "simulator": "node simulator/simulator.js"
   },
   "keywords": [],
   "author": "",
