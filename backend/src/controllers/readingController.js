@@ -1,5 +1,6 @@
 const WaterReading = require("../models/WaterReading");
 const Device = require("../models/Device");
+const {evaluateReading} = require("../services/thresholdService");
 
 const createReading = async (req,res) => {
     try {
@@ -43,6 +44,8 @@ const createReading = async (req,res) => {
             tds, conductivity, salinity, ammonia, nitrite, nitrate,
             dataSource: dataSource || "simulator",
         });
+
+        const alerts = await evaluateReading(reading, device);
 
         //update device last seen info.
         await Device.updateOne(
