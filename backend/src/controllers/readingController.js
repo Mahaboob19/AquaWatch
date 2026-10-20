@@ -61,6 +61,16 @@ const createReading = async (req,res) => {
             success: true,
             message: "Water reading stored successfully",
             data: reading,
+            alerts: alerts.map((alert) => ({
+                id: alert._id,
+                parameter: alert.parameter,
+                value: alert.value,
+                severity: alert.severity,
+                type: alert.type,
+                status: alert.status,
+                occurrenceCount: alert.occurrenceCount,
+                message: alert.message,
+            })),
         });
     } catch (err) {
         console.error("Create reading error: ",err);

@@ -6,15 +6,17 @@ const alertSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Device",
             required: true,
+            index: true,
         },
         readingId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "WaterReading",
-            required: true,
+            default: null,
         },
         parameter: {
             type: String,
             required: true,
+            enum: ["ph","temperature","dissolvedOxygen","turbidity","tds","conductivity","salinity","ammonia","nitrite","nitrate"],
         },
         value: {
             type: Number,
@@ -42,12 +44,28 @@ const alertSchema = new mongoose.Schema(
             type: String,
             enum: ["open","acknowledged","resolved"],
             default: "open",
+            index: true,
         },
         message: {
             type: String,
             required: true,
+            trim: true,
+        },
+        occurrenceCount: {
+            type: Number,
+            required: true,
+            trim: true,
+        },
+        lastSeenAt: {
+            type: Date,
+            default: Date.now,
         },
         acknowledgedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: null,
+        },
+        resolvedBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             default: null,
@@ -59,7 +77,12 @@ const alertSchema = new mongoose.Schema(
         resolvedAt: {
             type: Date,
             default: null,
-        }
+        },
+        resolutionReason: {
+            type: String,
+            trim: true,
+            default: null,
+        },
     },
     {
         timestamps: true,
@@ -70,6 +93,13 @@ alertSchema.index({
     deviceId: 1,
     status: 1,
     createdAt: -1,
+});
+
+alertSchema.index({
+    deviceId: 1,
+    parameter: 1,
+    type: 1,
+    status: 1,
 });
 
 module.exports = mongoose.model("Alert", alertSchema);
