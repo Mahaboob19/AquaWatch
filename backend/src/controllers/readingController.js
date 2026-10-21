@@ -1,6 +1,7 @@
 const WaterReading = require("../models/WaterReading");
 const Device = require("../models/Device");
 const {evaluateReading} = require("../services/thresholdService");
+const {calculateAndSaveWCI} = require("../services/wciService");
 
 const createReading = async (req,res) => {
     try {
@@ -57,6 +58,9 @@ const createReading = async (req,res) => {
                 }
             }
         );
+
+        const wci = await calculateAndSaveWCI(reading, device);
+
         res.status(201).json({
             success: true,
             message: "Water reading stored successfully",
@@ -71,6 +75,14 @@ const createReading = async (req,res) => {
                 occurrenceCount: alert.occurrenceCount,
                 message: alert.message,
             })),
+            wci: {
+                recordId: wci.recordId,
+                score: wci.wciScore,
+                status: wci.status,
+                parameterScores: wci.parameterScores,
+                evaluatedParameters: wci.evaluatedParameters,
+                methodVersion: wci.methodVersion,
+            }
         });
     } catch (err) {
         console.error("Create reading error: ",err);

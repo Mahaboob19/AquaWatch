@@ -5,6 +5,7 @@ const morgan = require("morgan");
 
 const readingRoutes = require("./src/routes/readingRoutes");
 const alertRoutes = require("./src/routes/alertRoutes");
+const wciRoutes = require("./src/routes/wciRoutes");
 
 const app = express();
 
@@ -33,5 +34,7 @@ app.get("/api/v1/health", (req, res) => {
 app.use("/api/v1/readings", readingRoutes);
 
 app.use("api/v1/alerts", alertRoutes);
+
+app.use("/api/v1/wci", wciRoutes);
 
 module.exports = app;
